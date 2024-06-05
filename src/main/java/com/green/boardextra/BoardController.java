@@ -1,5 +1,7 @@
 package com.green.boardextra;
 
+import com.green.boardextra.model.GetBoardReq;
+import com.green.boardextra.model.GetBoardRes;
 import com.green.boardextra.model.PostBoardReq;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
@@ -11,6 +13,8 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,11 +38,29 @@ public class BoardController {
 
     //Query String - RequestParam (page, size)
     @GetMapping
-    public int getBoard(@RequestParam int page, @RequestParam int size) {
-        log.info("page: {}", page);
-        log.info("size: {}", size);
+    public int getBoard(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+        log.info("controller - page: {}, size: {}", page, size);
+        service.getBoard(page, size, search);
         return 1;
         //return "{ \"test\": \"반가워\", \"age\": 23 }";
+    }
+
+    @GetMapping("/object")
+    public List<GetBoardRes> getBoardObject(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+        log.info("controller - page: {}, size: {}", page, size);
+        GetBoardReq p = new GetBoardReq();
+        p.setPage(page);
+        p.setSize(size);
+        p.setSearch(search);
+
+        return service.getBoard(p);
+        //return "{ \"test\": \"반가워\", \"age\": 23 }";
+    }
+
+    @GetMapping("/object2")
+    public List<GetBoardRes> getBoardObject2(@ParameterObject @ModelAttribute GetBoardReq p) {
+        log.info("p: {}", p);
+        return service.getBoard(p);
     }
 
     @DeleteMapping

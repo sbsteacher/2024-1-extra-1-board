@@ -9,4 +9,20 @@
              , writer = #{writer}
     </insert>
 
+    <select id="selBoardList">
+        SELECT board_id AS boardId, title, writer, created_at AS createdAt
+          FROM board
+        <where>
+            <if test=" search != null and search != '' ">
+                title LIKE '%${search}%'
+                OR
+                contents LIKE '%${search}%'
+                OR
+                writer LIKE '%${search}%'
+            </if>
+        </where>
+         ORDER BY board_id DESC
+         LIMIT #{startIdx}, #{size}
+    </select>
+
 </mapper>
