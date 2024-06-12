@@ -25,4 +25,15 @@
          LIMIT #{startIdx}, #{size}
     </select>
 
+    <update id="updBoard">
+        UPDATE board
+           SET title = #{title}
+             , contents = #{contents}
+         WHERE board_id = #{boardId}
+    </update>
+
+    <delete id="delBoardAllForTest">
+        DELETE FROM board
+    </delete>
+
 </mapper>
